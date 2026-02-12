@@ -19,7 +19,7 @@ function fetchPage(pageUrl) {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
       },
-      timeout: 10000
+      timeout: 120000
     };
 
     const req = protocol.request(options, (res) => {
