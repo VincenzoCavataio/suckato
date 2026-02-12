@@ -1,12 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const config = require('./config');
 const { getEpisodeLinks } = require('./utils/parser');
 const { processEpisodesParallel } = require('./processor');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+const { port, corsOrigin, env } = config.getConfig();
+
+app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
 /**
@@ -35,7 +37,9 @@ app.post('/api/scrape', async (req, res) => {
 
     const startTime = Date.now();
 
-    const episodeLinks = await getEpisodeLinks(url);
+    const episodeData = await getEpisodeLinks(url);
+    const episodeLinks = episodeData.episodes;
+    const animeTitle = episodeData.title;
 
     if (episodeLinks.length === 0) {
       return res.status(404).json({
@@ -44,7 +48,7 @@ app.post('/api/scrape', async (req, res) => {
       });
     }
 
-    const { links, results, elapsed } = await processEpisodesParallel(episodeLinks);
+    const { links, results, elapsed, title } = await processEpisodesParallel(episodeLinks, animeTitle);
 
     const responseTime = ((Date.now() - startTime) / 1000).toFixed(2);
 
@@ -52,7 +56,8 @@ app.post('/api/scrape', async (req, res) => {
       success: true,
       data: {
         results: results,
-        links: links
+        links: links,
+        title: title
       },
       stats: {
         totalEpisodi: episodeLinks.length,
@@ -123,7 +128,8 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server avviato su http://localhost:${PORT}`);
-  console.log(`📖 Documentazione: http://localhost:${PORT}`);
+app.listen(port, () => {
+  config.printConfig();
+  console.log(`🚀 Server avviato su http://localhost:${port}`);
+  console.log(`📖 Documentazione: http://localhost:${port}`);
 });

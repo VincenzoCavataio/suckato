@@ -1,11 +1,11 @@
 const { JSDOM } = require('jsdom');
 const url = require('url');
-const { fetchPage } = require('./http');
+const { fetchPage } = require('./http.js');
 
 /**
  * Estrae tutti i link degli episodi dalla pagina principale
  * @param {string} mainUrl - URL della pagina principale
- * @returns {Promise<string[]>} Array di URL degli episodi
+ * @returns {Promise<{episodes: string[], title: string}>} Array di URL degli episodi e titolo anime
  */
 async function getEpisodeLinks(mainUrl) {
   try {
@@ -13,6 +13,10 @@ async function getEpisodeLinks(mainUrl) {
     const html = await fetchPage(mainUrl);
     const dom = new JSDOM(html);
     const document = dom.window.document;
+
+    // Estrai il titolo dell'anime
+    const titleElement = document.getElementById('anime-title');
+    const animeTitle = titleElement ? titleElement.textContent.trim() : 'Sconosciuto';
 
     const episodes = [];
     document.querySelectorAll('.episode > a').forEach(a => {
@@ -23,8 +27,13 @@ async function getEpisodeLinks(mainUrl) {
       }
     });
 
+    console.log(`Trovato anime: ${animeTitle}`);
     console.log(`Trovati ${episodes.length} episodi`);
-    return episodes;
+    
+    return {
+      episodes,
+      title: animeTitle
+    };
   } catch (err) {
     console.error('Errore nel fetch della pagina principale:', err.message);
     throw err;

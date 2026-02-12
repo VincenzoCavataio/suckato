@@ -3,10 +3,11 @@ const { getDownloadLink } = require('./utils/parser.js');
 /**
  * Elabora gli episodi in parallelo con limite di concorrenza
  * @param {string[]} episodeLinks - Array di URL degli episodi
+ * @param {string} animeTitle - Titolo dell'anime
  * @param {number} concurrency - Numero di richieste parallele simultanee
- * @returns {Promise<{links: string[], results: Object[]}>} Links e risultati dettagliati
+ * @returns {Promise<{links: string[], results: Object[], title: string}>} Links, risultati e titolo
  */
-async function processEpisodesParallel(episodeLinks, concurrency = 10) {
+async function processEpisodesParallel(episodeLinks, animeTitle = 'Sconosciuto', concurrency = 10) {
   const downloadLinks = [];
   const results = [];
   const total = episodeLinks.length;
@@ -78,6 +79,7 @@ async function processEpisodesParallel(episodeLinks, concurrency = 10) {
   return {
     links: downloadLinks,
     results: results.filter(r => r !== undefined).sort((a, b) => a.episode - b.episode),
+    title: animeTitle,
     elapsed
   };
 }
