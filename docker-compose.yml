@@ -1,0 +1,27 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: suckato-backend
+    restart: unless-stopped
+    command: ["node", "/code/server.js"]
+    ports:
+      3000:3000
+    networks:
+      - suckato-net
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: suckato-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - suckato-net
+
+networks:
+  suckato-net:
+    driver: bridge
