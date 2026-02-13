@@ -2,21 +2,24 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile.backend
     container_name: suckato-backend
     restart: unless-stopped
-    command: ["node", "/code/server.js"]
+    command: ["node", "/code/src/server.js"]
     ports:
-      3000:3000
+      - 3000:3000
     networks:
       - suckato-net
 
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile.frontend
     container_name: suckato-frontend
     restart: unless-stopped
+    command: ["nginx", "-g", "daemon off;"]
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - backend
     networks:
