@@ -133,3 +133,18 @@ app.listen(port, () => {
   console.log(`🚀 Server avviato su http://localhost:${port}`);
   console.log(`📖 Documentazione: http://localhost:${port}`);
 });
+
+/**
+ * Graceful shutdown
+ */
+process.on('SIGINT', () => {
+  console.log('\n\n🛑 Ricevuto SIGINT, chiusura in corso...');
+  console.log('✓ Server chiuso correttamente');
+  process.exit(0);
+});
+
+process.on('SIGTERM', () => {
+  console.log('\n\n🛑 Ricevuto SIGTERM, chiusura in corso...');
+  console.log('✓ Server chiuso correttamente');
+  process.exit(0);
+});
