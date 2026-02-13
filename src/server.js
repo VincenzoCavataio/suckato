@@ -128,7 +128,7 @@ app.use((req, res) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   config.printConfig();
   console.log(`🚀 Server avviato su http://localhost:${port}`);
   console.log(`📖 Documentazione: http://localhost:${port}`);
