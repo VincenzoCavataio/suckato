@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suckato Downloader</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🌋 Suckato Downloader</h1>
+    
+    <form id="scraperForm">
+      <div class="form-group">
+        <label for="urlInput">Inserisci l'URL:</label>
+        <input 
+          type="url" 
+          id="urlInput" 
+          placeholder="https://www.animeworld.ac/play/..."
+          required
+        >
+      </div>
+      <div id="formActions">
+        <button type="button" id="submitBtn">Estrai Link</button>
+      </div>
+    </form>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Elaborazione in corso...</p>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <div class="results" id="results">
+      <h2>Risultati</h2>
+      
+      <div class="stats" id="stats"></div>
+
+      <button class="copy-btn" id="copyBtn">📋 Copia tutti i link</button>
+    </div>
+  </div>
+
+  <!-- Scripts in ordine corretto -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

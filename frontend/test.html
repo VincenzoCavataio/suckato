@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Frontend</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #f0f0f0; }
+    .test { margin: 10px 0; padding: 10px; background: white; border-radius: 5px; }
+    .pass { border-left: 5px solid green; }
+    .fail { border-left: 5px solid red; }
+  </style>
+</head>
+<body>
+  <h1>Test Frontend</h1>
+  <div id="results"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    const results = document.getElementById('results');
+
+    function test(name, condition) {
+      const status = condition ? 'pass' : 'fail';
+      const symbol = condition ? '✓' : '✗';
+      const div = document.createElement('div');
+      div.className = `test ${status}`;
+      div.textContent = `${symbol} ${name}`;
+      results.appendChild(div);
+    }
+
+    // Test tutti i moduli
+    test('CONFIG è definito', typeof window.CONFIG !== 'undefined');
+    test('CONFIG ha getConfig', typeof window.CONFIG?.getConfig === 'function');
+    test('API è definito', typeof window.API !== 'undefined');
+    test('API ha scrape', typeof window.API?.scrape === 'function');
+    test('UI è definito', typeof window.UI !== 'undefined');
+    test('UI ha init', typeof window.UI?.init === 'function');
+    test('APP è definito', typeof window.APP !== 'undefined');
+    test('APP ha handleSubmit', typeof window.APP?.handleSubmit === 'function');
+    
+    // Test DOM
+    test('Form trovato', document.getElementById('scraperForm') !== null);
+    test('URL input trovato', document.getElementById('urlInput') !== null);
+    test('Submit button trovato', document.getElementById('submitBtn') !== null);
+    
+    // Test Configurazione
+    const config = window.CONFIG.getConfig();
+    test('Config ha apiUrl', config.apiUrl !== undefined);
+    test('Config ha apiTimeout', config.apiTimeout !== undefined);
+    test('API URL è localhost:3000', config.apiUrl.includes('localhost:3000'));
+
+    console.log('✓ Tutti i test completati!');
+  </script>
+</body>
+</html>
